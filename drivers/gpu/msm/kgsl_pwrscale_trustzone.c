@@ -159,13 +159,11 @@ static void tz_idle(struct kgsl_device *device, struct kgsl_pwrscale *pwrscale)
 		(priv->bin.total_time < FLOOR))
 		return;
 
-	/* If there is an extended block of busy processing, set
-	 * frequency to turbo.  Otherwise run the normal algorithm.
+	/* If there is an extended block of busy processing,
+	 * increase frequency.  Otherwise run the normal algorithm.
 	 */
 	if (priv->bin.busy_time > CEILING) {
-		val = 0;
-		kgsl_pwrctrl_pwrlevel_change(device,
-				KGSL_PWRLEVEL_TURBO);
+		val = -1;
 	} else if (priv->idle_dcvs) {
 		idle = priv->bin.total_time - priv->bin.busy_time;
 		idle = (idle > 0) ? idle : 0;
@@ -237,10 +235,8 @@ static int tz_init(struct kgsl_device *device, struct kgsl_pwrscale *pwrscale)
 	tz_pwrlevels[0] = j;
 	ret = scm_call(SCM_SVC_DCVS, TZ_INIT_ID, tz_pwrlevels,
 				sizeof(tz_pwrlevels), NULL, 0);
-	if (ret) {
-		KGSL_DRV_ERR(device, "Fall back to idle based GPU DCVS algo");
+	if (ret)
 		priv->idle_dcvs = 1;
-	}
 	return 0;
 }
 #else

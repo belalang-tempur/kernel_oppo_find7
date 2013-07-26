@@ -37,14 +37,13 @@ TRACE_EVENT(kgsl_issueibcmds,
 
 	TP_PROTO(struct kgsl_device *device,
 			int drawctxt_id,
-			struct kgsl_ibdesc *ibdesc,
-			int numibs,
+			struct kgsl_cmdbatch *cmdbatch,
 			int timestamp,
 			int flags,
 			int result,
 			unsigned int type),
 
-	TP_ARGS(device, drawctxt_id, ibdesc, numibs, timestamp, flags,
+	TP_ARGS(device, drawctxt_id, cmdbatch, timestamp, flags,
 		result, type),
 
 	TP_STRUCT__entry(
@@ -61,8 +60,8 @@ TRACE_EVENT(kgsl_issueibcmds,
 	TP_fast_assign(
 		__assign_str(device_name, device->name);
 		__entry->drawctxt_id = drawctxt_id;
-		__entry->ibdesc_addr = ibdesc[0].gpuaddr;
-		__entry->numibs = numibs;
+		__entry->ibdesc_addr = cmdbatch->ibdesc[0].gpuaddr;
+		__entry->numibs = cmdbatch->ibcount;
 		__entry->timestamp = timestamp;
 		__entry->flags = flags;
 		__entry->result = result;
@@ -259,6 +258,29 @@ TRACE_EVENT(kgsl_pwrlevel,
 		__get_str(device_name),
 		__entry->pwrlevel,
 		__entry->freq
+	)
+);
+
+TRACE_EVENT(kgsl_mpdcvs,
+
+	TP_PROTO(struct kgsl_device *device, unsigned int state),
+
+	TP_ARGS(device, state),
+
+	TP_STRUCT__entry(
+		__string(device_name, device->name)
+		__field(unsigned int, state)
+	),
+
+	TP_fast_assign(
+		__assign_str(device_name, device->name);
+		__entry->state = state;
+	),
+
+	TP_printk(
+		"d_name=%s %s",
+		__get_str(device_name),
+		__entry->state ? "BUSY" : "IDLE"
 	)
 );
 

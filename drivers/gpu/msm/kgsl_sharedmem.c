@@ -170,32 +170,17 @@ kgsl_process_uninit_sysfs(struct kgsl_process_private *private)
 	kobject_put(&private->kobj);
 }
 
-/**
- * kgsl_process_init_sysfs() - Initialize and create sysfs files for a process
- *
- * @device: Pointer to kgsl device struct
- * @private: Pointer to the structure for the process
- *
- * @returns: 0 on success, error code otherwise
- *
- * kgsl_process_init_sysfs() is called at the time of creating the
- * process struct when a process opens the kgsl device for the first time.
- * This function creates the sysfs files for the process.
- */
-int
-kgsl_process_init_sysfs(struct kgsl_device *device,
-		struct kgsl_process_private *private)
+void
+kgsl_process_init_sysfs(struct kgsl_process_private *private)
 {
 	unsigned char name[16];
-	int i, ret = 0;
+	int i, ret;
 
 	snprintf(name, sizeof(name), "%d", private->pid);
 
-	ret = kobject_init_and_add(&private->kobj, &ktype_mem_entry,
-		kgsl_driver.prockobj, name);
-
-	if (ret)
-		return ret;
+	if (kobject_init_and_add(&private->kobj, &ktype_mem_entry,
+		kgsl_driver.prockobj, name))
+		return;
 
 	for (i = 0; i < ARRAY_SIZE(mem_stats); i++) {
 		/* We need to check the value of sysfs_create_file, but we
@@ -206,7 +191,6 @@ kgsl_process_init_sysfs(struct kgsl_device *device,
 		ret = sysfs_create_file(&private->kobj,
 			&mem_stats[i].max_attr.attr);
 	}
-	return ret;
 }
 
 static int kgsl_drv_memstat_show(struct device *dev,
@@ -605,7 +589,7 @@ _kgsl_sharedmem_page_alloc(struct kgsl_memdesc *memdesc,
 
 	/*
 	 * Allocate space to store the list of pages to send to vmap.
-	 * This is an array of pointers so we can track 1024 pages per page
+	 * This is an array of pointers so we can t rack 1024 pages per page
 	 * of allocation.  Since allocations can be as large as the user dares,
 	 * we have to use the kmalloc/vmalloc trick here to make sure we can
 	 * get the memory we need.

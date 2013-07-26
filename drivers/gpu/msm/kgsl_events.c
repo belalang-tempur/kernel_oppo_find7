@@ -252,7 +252,7 @@ int kgsl_add_event(struct kgsl_device *device, u32 id, u32 ts,
 	 * Increase the active count on the device to avoid going into power
 	 * saving modes while events are pending
 	 */
-	ret = kgsl_active_count_get(device);
+	ret = kgsl_active_count_get_light(device);
 	if (ret < 0) {
 		kgsl_context_put(context);
 		kfree(event);
@@ -333,7 +333,11 @@ void kgsl_cancel_event(struct kgsl_device *device, struct kgsl_context *context,
 		void *priv)
 {
 	struct kgsl_event *event;
-	struct list_head *head = _get_list_head(device, context);
+	struct list_head *head;
+
+	BUG_ON(!mutex_is_locked(&device->mutex));
+
+	head = _get_list_head(device, context);
 
 	event = _find_event(device, head, timestamp, func, priv);
 
@@ -400,10 +404,19 @@ void kgsl_process_events(struct work_struct *work)
 	struct kgsl_context *context, *tmp;
 	uint32_t timestamp;
 
+	/*
+	 * Bail unless the global timestamp has advanced.  We can safely do this
+	 * outside of the mutex for speed
+	 */
+
+	timestamp = kgsl_readtimestamp(device, NULL, KGSL_TIMESTAMP_RETIRED);
+	if (timestamp == device->events_last_timestamp)
+		return;
+
 	mutex_lock(&device->mutex);
 
-	/* Process expired global events */
-	timestamp = kgsl_readtimestamp(device, NULL, KGSL_TIMESTAMP_RETIRED);
+	device->events_last_timestamp = timestamp;
+
 	_retire_events(device, &device->events, timestamp);
 	_mark_next_event(device, &device->events);
 
