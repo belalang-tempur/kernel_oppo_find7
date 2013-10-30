@@ -141,6 +141,12 @@ enum mdss_mdp_wb_ctl_type {
 	MDSS_MDP_WB_CTL_TYPE_LINE
 };
 
+struct mdss_mdp_perf_params {
+	u64 ib_quota;
+	u64 ab_quota;
+	u32 mdp_clk_rate;
+};
+
 struct mdss_mdp_ctl {
 	u32 num;
 	char __iomem *base;
@@ -164,11 +170,10 @@ struct mdss_mdp_ctl {
 	u32 dst_format;
 	bool is_secure;
 
-	u32 bus_ab_quota;
-	u32 bus_ib_quota;
-	u32 clk_rate;
-	u32 perf_changed;
 	int force_screen_state;
+
+	struct mdss_mdp_perf_params cur_perf;
+	struct mdss_mdp_perf_params new_perf;
 
 	struct mdss_data_type *mdata;
 	struct msm_fb_data_type *mfd;
@@ -419,12 +424,6 @@ struct mdss_overlay_private {
 	u32 splash_mem_addr;
 	u32 splash_mem_size;
 	u32 sd_enabled;
-};
-
-struct mdss_mdp_perf_params {
-	u32 ib_quota;
-	u32 ab_quota;
-	u32 mdp_clk_rate;
 };
 
 /**
