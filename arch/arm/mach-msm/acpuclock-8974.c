@@ -1872,7 +1872,7 @@ static struct acpu_level pro_rev1_2p3g_pvs2[] __initdata = {
 	{ 0, { 0 } }
 };
 
-#ifndef VENDOR_EDIT 
+#ifndef CONFIG_MACH_OPPO 
 //Shu.Liu@OnlineRd.Driver, 2014/01/14, modified core Vdd for reboot issue
 static struct acpu_level pro_rev1_2p3g_pvs3[] __initdata = {
 	{ 1, {  300000, PLL_0, 0,   0 },  L2(0),  800000,  76 },
@@ -2707,7 +2707,7 @@ static struct acpu_level pro_rev1_2p3g_pvs15[] __initdata = {
 	{ 1, { 2265600, HFPLL, 1, 118 }, L2(19),  970000, 738 },
 	{ 0, { 0 } }
 };
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 static struct pvs_table pvs_v2[NUM_PVS_REVS][NUM_SPEED_BINS][NUM_PVS] __initdata = {
 	/* 8974v2 2.0GHz Parts */

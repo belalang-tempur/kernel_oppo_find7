@@ -261,7 +261,7 @@ qpnp_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *alarm)
 
 	rtc_tm_to_time(&alarm->time, &secs);
 	/*OPPO yuyi add begin just for analysis boot automaticly*/
-	#ifdef VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
 	printk("alarm  qpnp-rtc.c .c qpnp_rtc_set_alarm\n");
 	#endif
 	/*OPPO yuyi add end just for analysis boot automaticly*/

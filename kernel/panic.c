@@ -65,11 +65,11 @@ void __weak panic_smp_self_stop(void)
 		cpu_relax();
 }
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* OPPO 2012-10-11 chendx Add begin for debug tools */
 extern bool is_otrace_on(void);
 /* OPPO 2012-10-11 chendx Add end */
-#endif //CONFIG_VENDOR_EDIT
+#endif //CONFIG_MACH_OPPO
 
 /**
  *	panic - halt the system
@@ -96,7 +96,7 @@ void panic(const char *fmt, ...)
 	 */
 	local_irq_disable();
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* OPPO 2012-10-11 chendx Add begin for debug tools */
     pr_info("kernel panic because of %s\n", fmt);
 
@@ -109,7 +109,7 @@ void panic(const char *fmt, ...)
         	kernel_restart("kernel");
 	}
 /* OPPO 2012-10-11 chendx Add end */
-#endif  //CONFIG_VENDOR_EDIT
+#endif  //CONFIG_MACH_OPPO
 
 
 	/*

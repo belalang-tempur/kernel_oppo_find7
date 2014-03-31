@@ -1186,10 +1186,10 @@ enum {
 	Opt_inode_readahead_blks, Opt_journal_ioprio,
 	Opt_dioread_nolock, Opt_dioread_lock,
 	Opt_discard, Opt_nodiscard, Opt_init_itable, Opt_noinit_itable,
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
         Opt_uid, Opt_diskuid, Opt_gid, Opt_diskgid,Opt_fmask, Opt_dmask,
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 };
 
 static const match_table_t tokens = {
@@ -1268,7 +1268,7 @@ static const match_table_t tokens = {
 	{Opt_removed, "reservation"},	/* mount option from ext2/3 */
 	{Opt_removed, "noreservation"}, /* mount option from ext2/3 */
 	{Opt_removed, "journal=%u"},	/* mount option from ext2/3 */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
         {Opt_uid, "uid=%u"},
         {Opt_diskuid, "uid=%u:%u"},
@@ -1276,7 +1276,7 @@ static const match_table_t tokens = {
         {Opt_diskgid, "gid=%u:%u"},
         {Opt_dmask, "dmask=%o"},
         {Opt_fmask, "fmask=%o"},
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	{Opt_err, NULL},
 };
 
@@ -1473,7 +1473,7 @@ static int handle_mount_opt(struct super_block *sb, char *opt, int token,
 	else if (token == Opt_offgrpjquota)
 		return clear_qf_name(sb, GRPQUOTA);
 #endif
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
         if (token == Opt_dmask) {
                 if (args->from && match_octal(args, &arg))
@@ -1487,7 +1487,7 @@ static int handle_mount_opt(struct super_block *sb, char *opt, int token,
                 sbi->fs_fmask = arg;
                 return 1;
         }
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	if (args->from && match_int(args, &arg))
 		return -1;
 	switch (token) {
@@ -1526,7 +1526,7 @@ static int handle_mount_opt(struct super_block *sb, char *opt, int token,
 			return -1;
 		*journal_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_BE, arg);
 		return 1;
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
         /*FIXME: how to deal with case Opt_diskuid and Opt_diskgid */
         case Opt_uid:
@@ -1535,7 +1535,7 @@ static int handle_mount_opt(struct super_block *sb, char *opt, int token,
         case Opt_gid:
                 sbi->s_gid = sbi->s_diskgid = arg;
                 return 1;
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	}
 
 	for (m = ext4_mount_opts; m->token != Opt_err; m++) {
@@ -4253,7 +4253,7 @@ struct ext4_mount_options {
 	unsigned long s_mount_opt2;
 	uid_t s_resuid;
 	gid_t s_resgid;
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
         uid_t s_uid;
         uid_t s_diskuid;
@@ -4261,7 +4261,7 @@ struct ext4_mount_options {
         gid_t s_diskgid;
         unsigned short fs_fmask;
         unsigned short fs_dmask;
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	unsigned long s_commit_interval;
 	u32 s_min_batch_time, s_max_batch_time;
 #ifdef CONFIG_QUOTA
@@ -4292,7 +4292,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
 	old_opts.s_mount_opt2 = sbi->s_mount_opt2;
 	old_opts.s_resuid = sbi->s_resuid;
 	old_opts.s_resgid = sbi->s_resgid;
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
         old_opts.s_uid = sbi->s_uid;
         old_opts.s_diskuid = sbi->s_diskuid;
@@ -4300,7 +4300,7 @@ static int ext4_remount(struct super_block *sb, int *flags, char *data)
         old_opts.s_diskgid = sbi->s_diskgid;
         old_opts.fs_fmask = sbi->fs_fmask;
         old_opts.fs_dmask = sbi->fs_dmask;
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	old_opts.s_commit_interval = sbi->s_commit_interval;
 	old_opts.s_min_batch_time = sbi->s_min_batch_time;
 	old_opts.s_max_batch_time = sbi->s_max_batch_time;
@@ -4458,7 +4458,7 @@ restore_opts:
 	sbi->s_mount_opt2 = old_opts.s_mount_opt2;
 	sbi->s_resuid = old_opts.s_resuid;
 	sbi->s_resgid = old_opts.s_resgid;
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
         sbi->s_uid = old_opts.s_uid;
         sbi->s_diskuid = old_opts.s_diskuid;
@@ -4466,7 +4466,7 @@ restore_opts:
         sbi->s_diskgid = old_opts.s_diskgid;
         sbi->fs_fmask = old_opts.fs_fmask;
         sbi->fs_dmask = old_opts.fs_dmask;
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	sbi->s_commit_interval = old_opts.s_commit_interval;
 	sbi->s_min_batch_time = old_opts.s_min_batch_time;
 	sbi->s_max_batch_time = old_opts.s_max_batch_time;

@@ -227,7 +227,7 @@ static void mdss_fb_parse_dt_split(struct msm_fb_data_type *mfd)
 {
 	u32 data[2];
 	struct platform_device *pdev = mfd->pdev;
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 /* Xinqin.Yang@PhoneSW.Driver, 2014/02/10  Modify for Find7S */
 	if (of_property_read_u32_array(pdev->dev.of_node, "qcom,mdss-fb-split",
 				       data, 2))
@@ -242,7 +242,7 @@ static void mdss_fb_parse_dt_split(struct msm_fb_data_type *mfd)
 		mfd->split_fb_left = 0;
 		mfd->split_fb_right = 0;
 	}
-#else /*CONFIG_VENDOR_EDIT*/
+#else /*CONFIG_MACH_OPPO*/
 	if (get_pcb_version() < HW_VERSION__20) { /* Find7 */
         if (of_property_read_u32_array(pdev->dev.of_node, "qcom,mdss-fb-split",
 				       data, 2))
@@ -271,7 +271,7 @@ static void mdss_fb_parse_dt_split(struct msm_fb_data_type *mfd)
     	    mfd->split_fb_right = 0;
     	}
 	}
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 }
 
 static ssize_t mdss_fb_get_split(struct device *dev,
@@ -300,7 +300,7 @@ static ssize_t mdss_mdp_show_blank_event(struct device *dev,
 }
 
 /* OPPO 2013-11-26 yxq Add begin for suspend the device */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static ssize_t mdss_mdp_lcdoff_event(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -314,7 +314,7 @@ static ssize_t mdss_mdp_lcdoff_event(struct device *dev,
 #endif
 /* OPPO 2013-11-26 yxq Add end */
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/17  Add for set cabc */
 extern int set_cabc(int level);
 extern int cabc_mode;
@@ -337,35 +337,35 @@ static ssize_t mdss_set_cabc(struct device *dev,
     return count;
 }
 
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 
 static DEVICE_ATTR(msm_fb_type, S_IRUGO, mdss_fb_get_type, NULL);
 static DEVICE_ATTR(msm_fb_split, S_IRUGO, mdss_fb_get_split, NULL);
 static DEVICE_ATTR(show_blank_event, S_IRUGO, mdss_mdp_show_blank_event, NULL);
 /* OPPO 2013-11-26 yxq Add begin for suspend the device */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static DEVICE_ATTR(lcdoff, S_IRUGO, mdss_mdp_lcdoff_event, NULL);
 #endif
 /* OPPO 2013-11-26 yxq Add end */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/17  Add for set cabc */
 static DEVICE_ATTR(cabc, S_IRWXUGO, mdss_get_cabc, mdss_set_cabc);
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 static struct attribute *mdss_fb_attrs[] = {
 	&dev_attr_msm_fb_type.attr,
 	&dev_attr_msm_fb_split.attr,
 	&dev_attr_show_blank_event.attr,
 /* OPPO 2013-11-26 yxq Add begin for suspend the device */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	&dev_attr_lcdoff.attr,
 #endif
 /* OPPO 2013-11-26 yxq Add end */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/17  Add for set cabc */
 	&dev_attr_cabc.attr,
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	NULL,
 };
 
@@ -1039,14 +1039,14 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 	var->grayscale = 0,	/* No graylevels */
 	var->nonstd = 0,	/* standard pixel format */
 	var->activate = FB_ACTIVATE_VBL,	/* activate it at vsync */
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 /* Xinqin.Yang@PhoneSW.Driver, 2013/12/23  Modify for panel's real size */
 	var->height = -1,	/* height of picture in mm */
 	var->width = -1,	/* width of picture in mm */
-#else /*VENDOR_EDIT*/
+#else /*CONFIG_MACH_OPPO*/
 	var->height = 121,	/* height of picture in mm */
 	var->width = 68,	/* width of picture in mm */
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	var->accel_flags = 0,	/* acceleration flags */
 	var->sync = 0,	/* see FB_SYNC_* */
 	var->rotate = 0,	/* angle we rotate counter clockwise */

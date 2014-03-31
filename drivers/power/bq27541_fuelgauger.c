@@ -34,14 +34,14 @@
 #include <linux/err.h>
 #include <linux/qpnp-charger.h>
 #include <linux/i2c/bq27520.h> /* use the same platform data as bq27520 */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /*OPPO 2013-09-22 liaofuchun add for bq27541 encryption*/
 #include <linux/random.h>
 
 #include <linux/rtc.h>
 
 extern char *BQ27541_HMACSHA1_authenticate(char *Message,char *Key,char *result);
-#endif //CONFIG_VENDOR_EDIT
+#endif //CONFIG_MACH_OPPO
 
 /* OPPO 2013-12-20 liaofuchun add for fastchg firmware update */
 #ifdef CONFIG_PIC1503_FASTCG
@@ -117,7 +117,7 @@ extern int pic16f_fw_update(void);
 #define ZERO_DEGREE_CELSIUS_IN_TENTH_KELVIN   (-2731)
 #define BQ27541_INIT_DELAY   ((HZ)*1)
 /* OPPO 2013-08-24 wangjc Add begin for filter soc. */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 #define CAPACITY_SALTATE_COUNTER 12
 #define CAPACITY_SALTATE_COUNTER_NOT_CHARGING	48
 #define CAPACITY_SALTATE_COUNTER_HIGH	72
@@ -150,7 +150,7 @@ struct bq27541_device_info {
 	 */
 	struct  delayed_work		hw_config;
 /* OPPO 2013-08-24 wangjc Add begin for filter soc. */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	int soc_pre;
 	int temp_pre;
 	int batt_vol_pre;
@@ -202,16 +202,16 @@ static int bq27541_battery_temperature(struct bq27541_device_info *di)
 	int temp = 0;
 	static int count = 0;
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/02/27  Add for get right soc when sleep long time */
 	if(atomic_read(&di->suspended) == 1) {
 		return di->temp_pre + ZERO_DEGREE_CELSIUS_IN_TENTH_KELVIN;
 	}
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 	if(di->alow_reading == true) {
 		ret = bq27541_read(BQ27541_REG_TEMP, &temp, 0, di);
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/01/08  Add for don't report battery not connect when reading error once. */
 		if (ret) {
 			count++;
@@ -226,7 +226,7 @@ static int bq27541_battery_temperature(struct bq27541_device_info *di)
 			}
 		}
 		count = 0;
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	} else {
 		return di->temp_pre + ZERO_DEGREE_CELSIUS_IN_TENTH_KELVIN;	
 	}
@@ -237,7 +237,7 @@ static int bq27541_battery_temperature(struct bq27541_device_info *di)
 }
 
 /* OPPO 2013-08-24 wangjc Add begin for add adc interface. */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static int bq27541_remaining_capacity(struct bq27541_device_info *di)
 {
 	int ret;
@@ -335,12 +335,12 @@ static int bq27541_battery_soc(struct bq27541_device_info *di, bool raw)
 	int ret;
 	int soc = 0;
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/02/27  Add for get right soc when sleep long time */
 	if(atomic_read(&di->suspended) == 1) {
 		return di->soc_pre;
 	}
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 	if(di->alow_reading == true) {
 		ret = bq27541_read(BQ27541_REG_SOC, &soc, 0, di);
@@ -355,7 +355,7 @@ static int bq27541_battery_soc(struct bq27541_device_info *di, bool raw)
 			return 0;
 	}
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/02/27  Add for get right soc when sleep long time */
 	if(raw == true) {
 		if(soc > 90) {
@@ -365,7 +365,7 @@ static int bq27541_battery_soc(struct bq27541_device_info *di, bool raw)
 			di->soc_pre = soc;
 		}
 	}
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	soc = bq27541_soc_calibrate(di,soc);
 	return soc;
 	
@@ -381,12 +381,12 @@ static int bq27541_average_current(struct bq27541_device_info *di)
 	int ret;
 	int curr = 0;
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/02/27  Add for get right soc when sleep long time */
 	if(atomic_read(&di->suspended) == 1) {
 		return -di->current_pre;
 	}
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 	if(di->alow_reading == true) {
 		ret = bq27541_read(BQ27541_REG_AI, &curr, 0, di);
@@ -415,12 +415,12 @@ static int bq27541_battery_voltage(struct bq27541_device_info *di)
 	int ret;
 	int volt = 0;
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/02/27  Add for get right soc when sleep long time */
 	if(atomic_read(&di->suspended) == 1) {
 		return di->batt_vol_pre;
 	}
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 	if(di->alow_reading == true) {
 		ret = bq27541_read(BQ27541_REG_VOLT, &volt, 0, di);
@@ -564,7 +564,7 @@ static int bq27541_is_battery_id_valid(void)
 }
 
 /* OPPO 2013-08-24 wangjc Add begin for add adc interface. */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static int bq27541_get_batt_remaining_capacity(void)
 {
 	return bq27541_remaining_capacity(bq27541_di);
@@ -663,7 +663,7 @@ static struct qpnp_battery_gauge bq27541_batt_gauge = {
 	.is_battery_temp_within_range	= bq27541_is_battery_temp_within_range,
 	.is_battery_id_valid		= bq27541_is_battery_id_valid,
 /* OPPO 2013-09-30 wangjc Add begin for add new interface */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	.get_batt_remaining_capacity = bq27541_get_batt_remaining_capacity,
 	.get_battery_soc			= bq27541_get_battery_soc,
 	.get_average_current		= bq27541_get_average_current,
@@ -692,13 +692,13 @@ static void bq27541_hw_config(struct work_struct *work)
 	ret = bq27541_chip_config(di);
 	if (ret) {
 		dev_err(di->dev, "Failed to config Bq27541\n");
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/02/12  Add for retry when config fail */
 		di->retry_count--;
 		if(di->retry_count > 0) {
 			schedule_delayed_work(&di->hw_config, HZ);
 		}
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 		return;
 	}
 	qpnp_battery_gauge_register(&bq27541_batt_gauge);
@@ -713,11 +713,11 @@ static void bq27541_hw_config(struct work_struct *work)
 	udelay(66);
 	bq27541_read(BQ27541_REG_CNTL, &fw_ver, 0, di);
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /*OPPO 2013-09-18 liaofuchun add begin for check authenticate data*/
 	di->is_authenticated = bq27541_authenticate(di->client);
 	di->battery_type = bq27541_batt_type_detect(di->client);
-#endif //CONFIG_VENDOR_EDIT
+#endif //CONFIG_MACH_OPPO
 
 	dev_info(di->dev, "DEVICE_TYPE is 0x%02X, FIRMWARE_VERSION is 0x%02X\n",
 			type, fw_ver);
@@ -729,7 +729,7 @@ static int bq27541_read_i2c(u8 reg, int *rt_value, int b_single,
 {
 	struct i2c_client *client = di->client;
 /* OPPO 2013-12-09 wangjc Modify begin for use standard i2c interface */
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	struct i2c_msg msg[1];
 #else
 	struct i2c_msg msg[2];
@@ -741,13 +741,13 @@ static int bq27541_read_i2c(u8 reg, int *rt_value, int b_single,
 	if (!client->adapter)
 		return -ENODEV;
 /* OPPO 2013-09-30 wangjc Add begin for eliminate conflict */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	mutex_lock(&battery_mutex);
 #endif
 /* OPPO 2013-09-30 wangjc Add end */
 
 /* OPPO 2013-12-09 wangjc Modify begin for use standard i2c interface */
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	msg->addr = client->addr;
 	msg->flags = 0;
 	msg->len = 1;
@@ -807,7 +807,7 @@ static int bq27541_read_i2c(u8 reg, int *rt_value, int b_single,
 #endif
 /* OPPO 2013-12-09 wangjc Modify end */
 /* OPPO 2013-09-30 wangjc Add begin for eliminate conflict */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	mutex_unlock(&battery_mutex);
 #endif
 /* OPPO 2013-09-30 wangjc Add end */
@@ -912,7 +912,7 @@ static struct platform_device this_device = {
 };
 #endif
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /*OPPO 2013-09-18 liaofuchun add begin for bq27541 authenticate */
 #define BLOCKDATACTRL	0X61
 #define DATAFLASHBLOCK	0X3F
@@ -981,9 +981,9 @@ static bool bq27541_authenticate(struct i2c_client *client)
 }
 #endif //CONFIG_OPPO_DEVICE_FIND7OP
 /* OPPO 2014-02-25 sjc Modify end */
-#endif //CONFIG_VENDOR_EDIT
+#endif //CONFIG_MACH_OPPO
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Fuchun.Liao@EXP.Driver,2014/01/10 add for check battery type
 #define BATTERY_2700MA		0
 #define BATTERY_3000MA		1
@@ -1344,16 +1344,16 @@ static int bq27541_battery_probe(struct i2c_client *client,
 	di->bus = bus;
 	di->client = client;
 /* OPPO 2013-08-19 wangjc Add begin for error temp */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	di->temp_pre = 0;
 #endif
 /* OPPO 2013-08-19 wangjc Add end */
 	di->alow_reading = true;
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/02/12  Add for retry when config fail */
 	di->retry_count = MAX_RETRY_COUNT;
 	atomic_set(&di->suspended, 0);
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 #ifdef CONFIG_BQ27541_TEST_ENABLE
 	platform_set_drvdata(&this_device, di);

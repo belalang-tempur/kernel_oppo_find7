@@ -253,7 +253,7 @@ struct msm_slim_ctrl {
 	struct work_struct	slave_notify;
 	struct msm_slim_qmi	qmi;
 	struct msm_slim_pdata	pdata;
-	#ifdef CONFIG_VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
        //liuyan 2013-12-17 modify for at current
 	struct regulator *cdc_es325;
 	unsigned int	reset_gpio;

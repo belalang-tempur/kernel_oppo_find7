@@ -23,7 +23,7 @@ static struct workqueue_struct *autosleep_wq;
 static DEFINE_MUTEX(autosleep_lock);
 static struct wakeup_source *autosleep_ws;
 
-#ifdef VENDOR_EDIT 
+#ifdef CONFIG_MACH_OPPO 
 //Shu.Liu@OnlineRd.Driver, 2014/03/4, modified for sleep debug
 static void wakelock_printk(struct work_struct *work);
 static struct workqueue_struct *wakelock_printk_work_queue = NULL;
@@ -46,7 +46,7 @@ void wakelock_printk_control(int on)
 		cancel_delayed_work(&wakelock_printk_work);
 	}
 }
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 static void try_to_suspend(struct work_struct *work)
 {
@@ -117,10 +117,10 @@ int pm_autosleep_set_state(suspend_state_t state)
 	if (state >= PM_SUSPEND_MAX)
 		return -EINVAL;
 #endif
-#ifdef VENDOR_EDIT 
+#ifdef CONFIG_MACH_OPPO 
 //Shu.Liu@OnlineRd.Driver, 2014/03/4, modified for sleep debug
 	wakelock_printk_control(0);
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	__pm_stay_awake(autosleep_ws);
 
 	mutex_lock(&autosleep_lock);
@@ -137,21 +137,21 @@ int pm_autosleep_set_state(suspend_state_t state)
 	}
 
 	mutex_unlock(&autosleep_lock);
-#ifdef VENDOR_EDIT 
+#ifdef CONFIG_MACH_OPPO 
 //Shu.Liu@OnlineRd.Driver, 2014/03/4, modified for sleep debug
 	wakelock_printk_control(1); 
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	return 0;
 }
 
 int __init pm_autosleep_init(void)
 {
-#ifdef VENDOR_EDIT 
+#ifdef CONFIG_MACH_OPPO 
 //Shu.Liu@OnlineRd.Driver, 2014/03/4, modified for sleep debug
 	wakelock_printk_work_queue = create_singlethread_workqueue("wakelock_printk");
 	if (wakelock_printk_work_queue == NULL)
 		printk(KERN_INFO "%s: failed to create work queue\n", __func__);	
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 	autosleep_ws = wakeup_source_register("autosleep");
 	if (!autosleep_ws)

@@ -38,7 +38,7 @@
 #include "wcd9320.h"
 #include "wcd9xxx-resmgr.h"
 #include "wcd9xxx-common.h"
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //liuyan add for dvt
 #include <linux/pcb_version.h>
 //liuyan add for es325
@@ -67,7 +67,7 @@ static int spkr_drv_wrnd_param_set(const char *val,
 				   const struct kernel_param *kp);
 static int spkr_drv_wrnd = 1;
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //liuyan add for dvt
 static int pcb_version;
 #endif
@@ -311,7 +311,7 @@ static const DECLARE_TLV_DB_SCALE(digital_gain, 0, 1, 0);
 static const DECLARE_TLV_DB_SCALE(line_gain, 0, 7, 1);
 static const DECLARE_TLV_DB_SCALE(analog_gain, 0, 25, 1);
 static struct snd_soc_dai_driver taiko_dai[];
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //liuyan add for dvt
 static struct snd_soc_dai_driver taiko_dai_es325[];
 //liuyan add end
@@ -468,7 +468,7 @@ struct taiko_priv {
 	 * end of impedance measurement
 	 */
 	struct list_head reg_save_restore;
-	#ifdef CONFIG_VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
 	/*liuyan add 2013-11-26 for hpmic regulator*/
 	struct regulator	*cdc_hpmic_switch;
 	int hpmic_regulator_count;
@@ -479,7 +479,7 @@ struct taiko_priv {
 };
 
 /* OPPO 2013-11-12 xuzhaoan Add begin for American Headset Detect */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
     struct taiko_priv *priv_headset_type;
 #endif
 /* OPPO 2013-11-12 xuzhaoan Add end */
@@ -564,7 +564,7 @@ static unsigned short tx_digital_gain_reg[] = {
 	TAIKO_A_CDC_TX10_VOL_CTL_GAIN,
 };
 //liuyan 2013-3-13 add for headset detect
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 enum 
 {
 	NO_DEVICE	= 0,
@@ -1544,7 +1544,7 @@ static const struct soc_enum taiko_2_x_ear_pa_gain_enum =
 			taiko_2_x_ear_pa_gain_text);
 
 /*liuyan 2013-8-19 add for spk*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 #ifndef CONFIG_OPPO_DEVICE_FIND7OP
 /* xiaojun.lv@PhoneDpt.AudioDrv,2014/3/18,modify for 14001 spk control*/
 static int spkr_put_control(struct snd_kcontrol *kcontrol,
@@ -1648,7 +1648,7 @@ static int spkr_get_control(struct snd_kcontrol *kcontrol,
 /*liuyan add end*/
 static const struct snd_kcontrol_new taiko_2_x_analog_gain_controls[] = {
 //liuyan 2013-8-12 add power on max2777
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	SOC_SINGLE_EXT("SPKR Enable", 0, 0, 1, 0,
 		                 spkr_get_control, spkr_put_control),
 #endif	
@@ -6694,10 +6694,10 @@ static const struct wcd9xxx_reg_mask_val taiko_codec_reg_init_val[] = {
 
 	/* set MAD input MIC to DMIC1 */
 	{TAIKO_A_CDC_CONN_MAD, 0x0F, 0x08},
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* liuyan@Onlinerd.driver, 2014/01/15  Add for micbias pull down */
 	{TAIKO_A_MICB_1_CTL,0x01,0x01},
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 };
 
 static void taiko_codec_init_reg(struct snd_soc_codec *codec)
@@ -6754,7 +6754,7 @@ int taiko_hs_detect(struct snd_soc_codec *codec,
 {
 	int rc;
 	struct taiko_priv *taiko = snd_soc_codec_get_drvdata(codec);
-	#ifdef CONFIG_VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
        /*liuyan add for hpmic regulator*/
 	if(taiko->cdc_hpmic_switch){
 	    printk("%s: get the hpmic regulator\n",__func__);
@@ -7067,7 +7067,7 @@ static int taiko_post_reset_cb(struct wcd9xxx *wcd9xxx)
 			rco_clk_rate = TAIKO_MCLK_CLK_9P6MHZ;
 		//liuyan 2014-1-10 modify for low frequence noise in
 		//pluging headset
-              #ifndef CONFIG_VENDOR_EDIT
+              #ifndef CONFIG_MACH_OPPO
 		ret = wcd9xxx_mbhc_init(&taiko->mbhc, &taiko->resmgr, codec,
 					taiko_enable_mbhc_micbias,
 					&mbhc_cb, &cdc_intr_ids,
@@ -7265,7 +7265,7 @@ static int taiko_codec_probe(struct snd_soc_codec *codec)
 		rco_clk_rate = TAIKO_MCLK_CLK_9P6MHZ;
         //liuyan 2014-1-10 modify for low frequence nois in
         //pluging headset
-	#ifndef CONFIG_VENDOR_EDIT
+	#ifndef CONFIG_MACH_OPPO
 	/* init and start mbhc */
 	ret = wcd9xxx_mbhc_init(&taiko->mbhc, &taiko->resmgr, codec,
 				taiko_enable_mbhc_micbias,
@@ -7282,7 +7282,7 @@ static int taiko_codec_probe(struct snd_soc_codec *codec)
 		goto err_init;
 	}
 //liuyan 2013-3-13 add, headset detec
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
        /*liuyan add for hpmic regulator*/
 	if(pdata->cdc_hpmic_switch){
 	    printk("%s: get the hpmic regulator\n",__func__);
@@ -7426,7 +7426,7 @@ static int taiko_codec_probe(struct snd_soc_codec *codec)
 	codec->ignore_pmdown_time = 1;
 
 /* OPPO 2013-11-12 xuzhaoan Add begin for America Headset Detect */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
     priv_headset_type = taiko;
 #endif
 /* OPPO 2013-11-12 xuzhaoan Add end */
@@ -7439,7 +7439,7 @@ err_pdata:
 	kfree(ptr);
 err_nomem_slimch:
 //luiyan 2013-3-13 add for headset detect
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 switch_dev_unregister(&taiko->mbhc.wcd9xxx_sdev);
 err_switch_dev_register:
 #endif
@@ -7542,7 +7542,7 @@ static int __devinit taiko_probe(struct platform_device *pdev)
 	int ret = 0;
 	if (wcd9xxx_get_intf_type() == WCD9XXX_INTERFACE_TYPE_SLIMBUS){
 		//liuyan 2013-12-19 modify for evt1 and evt2
-		#ifdef CONFIG_VENDOR_EDIT
+		#ifdef CONFIG_MACH_OPPO
 		pcb_version=get_pcb_version(); //add for dvt
               printk("%s:pcb_version %d\n",__func__,pcb_version);
 		if(pcb_version==HW_VERSION__10){

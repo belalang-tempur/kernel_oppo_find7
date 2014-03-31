@@ -193,7 +193,7 @@ struct qup_i2c_dev {
 };
 
 /*OPPO yuyi 2013-11-27 delete begin for restore 2030B*/
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 #ifdef CONFIG_PM
 static int i2c_qup_pm_resume_runtime(struct device *device);
 #endif
@@ -953,7 +953,7 @@ qup_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 	int err;
 
 /*OPPO yuyi 2013-11-27 delete begin for restore 2030B*/
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	/* Alternate if runtime power management is disabled */
 	if (!pm_runtime_enabled(dev->dev)) {
 		dev_dbg(dev->dev, "Runtime PM is disabled\n");
@@ -1770,7 +1770,7 @@ static int i2c_qup_pm_resume_runtime(struct device *device)
 }
 
 /*OPPO yuyi 2013-11-27 delete begin for restore 2030B*/
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 static int qup_i2c_suspend(struct device *device)
 {
 	if (!pm_runtime_enabled(device) || !pm_runtime_suspended(device)) {

@@ -183,7 +183,7 @@ config SND_SOC_MSM8974
 	select SND_DYNAMIC_MINORS
 	select AUDIO_OCMEM
 	select DOLBY_DAP
-#ifdef VENDOR_EDIT	
+#ifdef CONFIG_MACH_OPPO	
 	#liuyan add for es325
 	select SND_SOC_ES325
 	select SND_SOC_ES325_SLIM

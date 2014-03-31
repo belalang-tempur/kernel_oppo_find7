@@ -461,7 +461,7 @@ config SND_SOC_MSM_HDMI_CODEC_RX
 	help
 	HDMI audio drivers should be built only if the platform
         supports hdmi panel.
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 #liuyan add fof es325
 config  SND_SOC_ES325
 tristate

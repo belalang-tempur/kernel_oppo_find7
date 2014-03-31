@@ -329,7 +329,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 	long now, scheduled;
 	int err;
 /* OPPO 2013-11-19 yuyi Add begin for clear alarm register */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	struct rtc_time rtc_tm;
 
 	memset(&rtc_tm, 0, sizeof(rtc_tm));// mwalker
@@ -338,7 +338,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 
 	err = rtc_valid_tm(&alarm->time);
 /* OPPO 2013-11-19 yuyi modify begin for clear alarm register */
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	if (err)
 		return err;
 #else
@@ -356,7 +356,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 	err = __rtc_read_time(rtc, &tm);
 	rtc_tm_to_time(&tm, &now);
 /* OPPO 2013-11-19 yuyi modify begin for clear alarm register */
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	if (scheduled <= now)
 		return -ETIME;
 #else
@@ -388,7 +388,7 @@ int rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 	int err;
 
 /* OPPO 2013-11-19 yuyi Add begin for clear alarm register */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	struct rtc_time rtc_tm;
 
 	memset(&rtc_tm, 0, sizeof(rtc_tm));// mwalker
@@ -403,7 +403,7 @@ int rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 
 
 	/*OPPO yuyi add begin just for analysis boot automaticly*/
-	#ifdef VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
 	printk("alarm  Interface.c rtc_set_alarm\n");
 	#endif
 	/*OPPO yuyi add end just for analysis boot automaticly*/	

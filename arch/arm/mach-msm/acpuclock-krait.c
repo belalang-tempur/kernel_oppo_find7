@@ -40,7 +40,7 @@
 #include "acpuclock-krait.h"
 #include "avs.h"
 
-#ifdef VENDOR_EDIT 
+#ifdef CONFIG_MACH_OPPO 
 //Shu.Liu@OnlineRd.Driver, 2013/12/28, modified core Vdd for EVT1/EVT2
 #include <linux/pcb_version.h>
 #endif
@@ -1129,10 +1129,10 @@ static struct pvs_table * __init select_freq_plan(
 {
 	void __iomem *pte_efuse_base;
 	struct bin_info bin;	
-#ifdef VENDOR_EDIT 
+#ifdef CONFIG_MACH_OPPO 
 //Shu.Liu@OnlineRd.Driver, 2013/12/28, modified core Vdd for EVT1/EVT2
 	int pcb_version = PCB_VERSION_UNKNOWN;
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 	pte_efuse_base = ioremap(params->pte_efuse_phys, 8);
 	if (!pte_efuse_base) {
@@ -1162,7 +1162,7 @@ static struct pvs_table * __init select_freq_plan(
 			 drv.pvs_bin);
 	}
 
-#ifdef VENDOR_EDIT 
+#ifdef CONFIG_MACH_OPPO 
 //Shu.Liu@OnlineRd.Driver, 2013/12/28, modified core Vdd for EVT1/EVT2
 	pcb_version = get_pcb_version();
 	printk("The drv.pvs_bin is %d\n", drv.pvs_bin);
@@ -1173,7 +1173,7 @@ static struct pvs_table * __init select_freq_plan(
        }
 #else
 	return &params->pvs_tables[drv.pvs_rev][drv.speed_bin][drv.pvs_bin];         
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 }
 
 static void __init drv_data_init(struct device *dev,

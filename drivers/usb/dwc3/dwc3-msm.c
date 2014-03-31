@@ -231,10 +231,10 @@ struct dwc3_msm {
 	unsigned int		vdd_high_vol_level;
 	unsigned int		tx_fifo_size;
 	unsigned int		qdss_tx_fifo_size;
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2013/12/30  Add for notify charge type */
 	unsigned int		power_now;
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	bool			vbus_active;
 	bool			ext_inuse;
 	enum dwc3_id_state	id_state;
@@ -2268,12 +2268,12 @@ static int dwc3_msm_power_get_property_usb(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_TYPE:
 		val->intval = psy->type;
 		break;
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2013/12/30  Add for notify charge type */
 	case POWER_SUPPLY_PROP_POWER_NOW:
 		val->intval = mdwc->power_now;
 		break;
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	default:
 		return -EINVAL;
 	}
@@ -2322,12 +2322,12 @@ static int dwc3_msm_power_set_property_usb(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_TYPE:
 		psy->type = val->intval;
 		break;
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2013/12/30  Add for notify charge type */
 	case POWER_SUPPLY_PROP_POWER_NOW:
 		mdwc->power_now = val->intval;
 		break;
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	default:
 		return -EINVAL;
 	}
@@ -2388,10 +2388,10 @@ static enum power_supply_property dwc3_msm_pm_power_props_usb[] = {
 	POWER_SUPPLY_PROP_CURRENT_MAX,
 	POWER_SUPPLY_PROP_TYPE,
 	POWER_SUPPLY_PROP_SCOPE,
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2013/12/30  Add for notify charge type */
 	POWER_SUPPLY_PROP_POWER_NOW,
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 };
 
 static void dwc3_init_adc_work(struct work_struct *w);

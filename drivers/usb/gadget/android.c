@@ -34,10 +34,10 @@
 #include <mach/diag_dload.h>
 
 #include "gadget_chips.h"
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2013/12/19, Add for support mass storage in recovery mode
 #include <linux/boot_mode.h>
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 /*
  * Kbuild is not very cooperative with respect to linking separately
@@ -267,7 +267,7 @@ static struct usb_gadget_strings *dev_strings[] = {
 	NULL,
 };
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2014/03/11, Add for disable usb serial number in RF or WLAN mode
 static struct usb_string strings_dev_no_serial[] = {
 	[STRING_MANUFACTURER_IDX].s = manufacturer_string,
@@ -285,7 +285,7 @@ static struct usb_gadget_strings *dev_strings_no_serial[] = {
 	&stringtab_dev_no_serial,
 	NULL,
 };
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 static struct usb_device_descriptor device_desc = {
 	.bLength              = sizeof(device_desc),
@@ -352,7 +352,7 @@ static void android_work(struct work_struct *data)
 	unsigned long flags;
 	int pm_qos_vote = -1;
 /* OPPO 2013-12-06 wangjc Add begin for sovle some pc can't charge problem */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	static bool connect_count = false;
 	struct usb_gadget	*gadget = cdev->gadget;
 #endif
@@ -412,7 +412,7 @@ static void android_work(struct work_struct *data)
 			last_uevent = next_state;
 		}
 /* OPPO 2013-12-06 wangjc Add begin for sovle some pc can't charge problem */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 		if(uevent_envp == connected) {
 			if(connect_count == false) {
 				connect_count = true;
@@ -1836,10 +1836,10 @@ static int mass_storage_function_init(struct android_usb_function *f,
 		name[config->fsg.nluns] = "lun1";
 		config->fsg.nluns++;
 	}
-#ifndef VENDOR_EDIT 
+#ifndef CONFIG_MACH_OPPO 
 //Zhilong.Zhang@OnlineRd.Driver, 2013/12/19, Modify for support CD-ROM in normal mode and support mass storage in recovery mode
 	config->fsg.luns[0].removable = 1;
-#else /* VENDOR_EDIT */
+#else /* CONFIG_MACH_OPPO */
 	if(get_boot_mode() == MSM_BOOT_MODE__RECOVERY) {
 		config->fsg.luns[0].removable = 1;
 	}
@@ -1848,7 +1848,7 @@ static int mass_storage_function_init(struct android_usb_function *f,
 		config->fsg.luns[0].ro = 1;
 		config->fsg.luns[0].removable = 0;	
 	}
-#endif /* VENDOR_EDIT */	
+#endif /* CONFIG_MACH_OPPO */	
 
 	common = fsg_common_init(NULL, cdev, &config->fsg);
 	if (IS_ERR(common)) {
@@ -2609,10 +2609,10 @@ DESCRIPTOR_ATTR(bDeviceSubClass, "%d\n")
 DESCRIPTOR_ATTR(bDeviceProtocol, "%d\n")
 DESCRIPTOR_STRING_ATTR(iManufacturer, manufacturer_string)
 DESCRIPTOR_STRING_ATTR(iProduct, product_string)
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2014/03/11, Modify for disable usb serial number in RF or WLAN mode
 DESCRIPTOR_STRING_ATTR(iSerial, serial_string)
-#else /* VENDOR_EDIT */
+#else /* CONFIG_MACH_OPPO */
 static ssize_t
 iSerial_show(struct device *dev, struct device_attribute *attr,
 		char *buf)
@@ -2633,7 +2633,7 @@ iSerial_store(struct device *dev, struct device_attribute *attr,
 	return size;
 }
 static DEVICE_ATTR(iSerial, S_IRUGO | S_IWUSR, iSerial_show, iSerial_store);
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 static DEVICE_ATTR(functions, S_IRUGO | S_IWUSR, functions_show,
 						 functions_store);
@@ -2732,27 +2732,27 @@ static int android_bind(struct usb_composite_dev *cdev)
 	strlcpy(manufacturer_string, "Android",
 		sizeof(manufacturer_string) - 1);
 	strlcpy(product_string, "Android", sizeof(product_string) - 1);
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2014/03/11, Modify for disable usb serial number in RF or WLAN mode	
 	strlcpy(serial_string, "0123456789ABCDEF", sizeof(serial_string) - 1);
-#else /* VENDOR_EDIT */
+#else /* CONFIG_MACH_OPPO */
 	if(get_boot_mode() != MSM_BOOT_MODE__RF && get_boot_mode() != MSM_BOOT_MODE__WLAN)
 		strlcpy(serial_string, "0123456789ABCDEF", sizeof(serial_string) - 1);
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 	id = usb_string_id(cdev);
 	if (id < 0)
 		return id;
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2014/03/11, Modify for disable usb serial number in RF or WLAN mode	
 	strings_dev[STRING_SERIAL_IDX].id = id;
 	device_desc.iSerialNumber = id;
-#else /* VENDOR_EDIT */
+#else /* CONFIG_MACH_OPPO */
 	if(get_boot_mode() != MSM_BOOT_MODE__RF && get_boot_mode() != MSM_BOOT_MODE__WLAN) {
 		strings_dev[STRING_SERIAL_IDX].id = id;
 		device_desc.iSerialNumber = id;
 	}
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 	if (gadget_is_otg(cdev->gadget))
 		list_for_each_entry(conf, &dev->configs, list_item)
@@ -2790,7 +2790,7 @@ static struct usb_composite_driver android_usb_driver = {
 	.max_speed	= USB_SPEED_SUPER
 };
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2014/03/11, Add for disable usb serial number in RF or WLAN mode
 static struct usb_composite_driver android_usb_driver_no_serial = {
 	.name		= "android_usb",
@@ -2799,7 +2799,7 @@ static struct usb_composite_driver android_usb_driver_no_serial = {
 	.unbind		= android_usb_unbind,
 	.max_speed	= USB_SPEED_SUPER
 };
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 static int
 android_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *c)
@@ -3131,15 +3131,15 @@ static int __devinit android_probe(struct platform_device *pdev)
 		goto err_dev;
 	}
 
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2014/03/11, Modify for disable usb serial number in RF or WLAN mode
 	ret = usb_composite_probe(&android_usb_driver, android_bind);
-#else /* VENDOR_EDIT */
+#else /* CONFIG_MACH_OPPO */
 	if(get_boot_mode() == MSM_BOOT_MODE__RF || get_boot_mode() == MSM_BOOT_MODE__WLAN)
 		ret = usb_composite_probe(&android_usb_driver_no_serial, android_bind);
 	else
 		ret = usb_composite_probe(&android_usb_driver, android_bind);		
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	if (ret) {
 		pr_err("%s(): Failed to register android "
 				 "composite driver\n", __func__);

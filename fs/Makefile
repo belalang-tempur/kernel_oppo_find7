@@ -129,7 +129,7 @@ obj-$(CONFIG_PSTORE)		+= pstore/
 # Patched by YAFFS
 obj-$(CONFIG_YAFFS_FS)		+= yaffs2/
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 #Zhilong.Zhang@OnlineRd.Driver, 2014/02/26, Add for exfat filesystem
 obj-$(CONFIG_EXFAT_FS)		+= exfat/
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/

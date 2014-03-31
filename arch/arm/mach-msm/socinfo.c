@@ -174,7 +174,7 @@ struct socinfo_v8 {
 	uint32_t pmic_die_revision_2;
 };
 /*OPPO yuyi 2013-10-18 add begin for pcb_version in sys/devices/system/soc/soc0*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 struct socinfo_v9 {
 	char hw_pcb_version[10];
 };
@@ -193,7 +193,7 @@ static union {
 	struct socinfo_v7 v7;
 	struct socinfo_v8 v8;
 /*OPPO yuyi 2013-10-18 add begin for pcb_version in sys/devices/system/soc/soc0*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	struct socinfo_v9 v9;
 	struct socinfo_v10 v10;
 #endif
@@ -453,7 +453,7 @@ static struct socinfo_v1 dummy_socinfo = {
 };
 
 /*OPPO yuyi 2013-10-18 add begin for pcb_version in sys/devices/system/soc/soc0*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 #include <linux/pcb_version.h>
 char * socinfo_get_hw_pcb_version(void)
 {
@@ -633,7 +633,7 @@ enum msm_cpu socinfo_get_msm_cpu(void)
 EXPORT_SYMBOL_GPL(socinfo_get_msm_cpu);
 
 /*OPPO yuyi 2013-10-18 add begin for pcb_version in sys/devices/system/soc/soc0*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static ssize_t
 socinfo_show_hw_pcb_version(struct sys_device *dev,
 		      struct sysdev_attribute *attr,
@@ -980,7 +980,7 @@ msm_get_pmic_die_revision(struct device *dev,
 }
 
 /*OPPO yuyi 2013-10-18 add begin for pcb_version in sys/devices/system/soc/soc0*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static struct sysdev_attribute socinfo_v9_files[] = {
 	_SYSDEV_ATTR(hw_pcb_version, 0444, socinfo_show_hw_pcb_version, NULL),
 };
@@ -1223,7 +1223,7 @@ static struct device_attribute image_crm_version =
 	__ATTR(image_crm_version, S_IRUGO | S_IWUSR,
 			msm_get_image_crm_version, msm_set_image_crm_version);
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Yubin@Mobile Phone Software Dept.Driver, 2013/12/27  Add for CTS permission */
 static struct device_attribute select_image =
 	__ATTR(select_image, S_IRUGO | S_IWUSR,
@@ -1232,7 +1232,7 @@ static struct device_attribute select_image =
 static struct device_attribute select_image =
 	__ATTR(select_image, S_IRUGO | S_IWUGO,
 			msm_get_image_number, msm_select_image);
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 static struct sysdev_class soc_sysdev_class = {
 	.name = "soc",
@@ -1386,7 +1386,7 @@ static int __init socinfo_init_sysdev(void)
 		goto socinfo_init_err;
 	}
 /*OPPO yuyi 2013-10-18 add begin for pcb_version in sys/devices/system/soc/soc0*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	socinfo_create_files(&soc_sys_device, socinfo_v9_files,
 			ARRAY_SIZE(socinfo_v9_files));
 	socinfo_create_files(&soc_sys_device, socinfo_v10_files,

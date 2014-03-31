@@ -1155,7 +1155,7 @@ struct ext4_sb_info {
 	ext4_fsblk_t s_sb_block;
 	uid_t s_resuid;
 	gid_t s_resgid;
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
         uid_t s_uid;          /* make all files appear to belong to this uid */
         uid_t s_diskuid;      /* write this uid to disk (if s_uid != 0) */
@@ -1163,7 +1163,7 @@ struct ext4_sb_info {
         gid_t s_diskgid;      /* write this gid to disk (if s_gid != 0) */
         unsigned short fs_fmask;
         unsigned short fs_dmask;
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 	unsigned short s_mount_state;
 	unsigned short s_pad;
 	int s_addr_per_block_bits;
@@ -2361,7 +2361,7 @@ static inline void set_bitmap_uptodate(struct buffer_head *bh)
 
 #define in_range(b, first, len)	((b) >= (first) && (b) <= (first) + (len) - 1)
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Jianfeng.Qiu@OnlineRd.Driver, 2014/1/23, Add for support to set uid, gid, fmask, dmask
 static inline umode_t ext4_make_mode(struct ext4_sb_info *ei, umode_t i_mode)
 {
@@ -2389,7 +2389,7 @@ static inline void ext4_fill_inode(struct super_block *sb, struct inode *inode)
 	}
 	return;
 }
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 /* For ioend & aio unwritten conversion wait queues */
 #define EXT4_WQ_HASH_SZ		37

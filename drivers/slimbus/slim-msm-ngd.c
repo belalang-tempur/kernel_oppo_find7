@@ -30,7 +30,7 @@
 #include <mach/qdsp6v2/apr.h>
 
 //liuyan add for dvt
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 #include <linux/regulator/consumer.h>
 #include <linux/of_gpio.h>
 #include <linux/pcb_version.h>
@@ -1039,7 +1039,7 @@ static int __devinit ngd_slim_probe(struct platform_device *pdev)
 	enum apr_subsys_state q6_state;
 	bool			rxreg_access = false;
 
-	#ifdef CONFIG_VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
        //liuyan 2013-12-17 modify for at current
       	int pcb_version;
 	#endif
@@ -1097,7 +1097,7 @@ static int __devinit ngd_slim_probe(struct platform_device *pdev)
 		ret = -ENOMEM;
 		goto err_ioremap_bam_failed;
 	}
-	#ifdef CONFIG_VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
        //liuyan 2013-12-17 modify for at current
        pcb_version=get_pcb_version();
 	if(pcb_version==HW_VERSION__10){

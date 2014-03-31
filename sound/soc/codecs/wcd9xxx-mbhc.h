@@ -11,7 +11,7 @@
  */
 #ifndef __WCD9XXX_MBHC_H__
 #define __WCD9XXX_MBHC_H__
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //liuyan add 2013-3-1, headset report
 #include<linux/switch.h>
 //liuyan add end
@@ -226,7 +226,7 @@ struct wcd9xxx_mbhc_config {
 	unsigned int gpio;
 	unsigned int gpio_irq;
 //liuyan add 2013-3-14,hpmic switch gpio
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
        int hpmic_switch_gpio; 
 	struct regulator	*cdc_hpmic_switch;
 	int hpmic_regulator_count;
@@ -362,7 +362,7 @@ struct wcd9xxx_mbhc {
 	bool update_z;
 	/* Holds codec specific interrupt mapping */
 	const struct wcd9xxx_mbhc_intr *intr_ids;
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	//liuyan 2013-3-1,add for headset report
 	struct switch_dev wcd9xxx_sdev;
 	//liuyan add end

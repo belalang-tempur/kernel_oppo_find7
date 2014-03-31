@@ -128,11 +128,11 @@ obj-y				+= clk/
 
 obj-$(CONFIG_HWSPINLOCK)	+= hwspinlock/
 #oppo yuyi 2013-10-11 modify begin for nfc
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 #obj-$(CONFIG_NFC)		+= nfc/
 #else
 obj-$(CONFIG_NFC_DEVICES)  += nfc/
-#endif VENDOR_EDIT
+#endif CONFIG_MACH_OPPO
 #oppo yuyi 2013-10-11 modify end for nfc
 obj-$(CONFIG_IOMMU_SUPPORT)	+= iommu/
 obj-$(CONFIG_REMOTEPROC)	+= remoteproc/

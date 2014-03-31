@@ -24,7 +24,7 @@
 #include <linux/regulator/krait-regulator.h>
 #include <linux/msm_tsens.h>
 #include <linux/msm_thermal.h>
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2013/12/03, Add for ram_console device
 #include <linux/persistent_ram.h>
 #endif
@@ -53,11 +53,11 @@
 #include "modem_notifier.h"
 #include "platsmp.h"
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* OPPO 2013.07.09 hewei add begin for factory mode*/
 #include <linux/gpio.h>
 /*OPPO yuyi 2013-07-15 add for version*/
-#ifdef  VENDOR_EDIT
+#ifdef  CONFIG_MACH_OPPO
 #include <linux/pcb_version.h>
 static char *saved_command_line_pcb_version = NULL;
 static char *saved_command_line_rf_version = NULL;
@@ -252,7 +252,7 @@ static struct attribute * g[] = {
 	&closemodem_attr.attr,
 /* OPPO 2013-01-04 Van add end for ftm close modem*/
 /*OPPO yuyi 2013-7-15 add begin for version*/
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	&pcb_version_attr.attr,
 	&rf_version_attr.attr,
 #endif
@@ -264,9 +264,9 @@ static struct attribute_group attr_group = {
 	.attrs = g,
 };
 /* OPPO 2013.07.09 hewei add end for factory modes*/
-#endif // CONFIG_VENDOR_EDIT
+#endif // CONFIG_MACH_OPPO
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* OPPO 2013-09-03 zhanglong add for add interface start reason and boot_mode begin */
 char pwron_event[16];
 
@@ -302,7 +302,7 @@ static int __init boot_mode_init(void)
 }
 //__setup("androidboot.mode=", boot_mode_setup);
 /* OPPO 2013-09-03 zhanglong add for add interface start reason and boot_mode end */
-#endif //CONFIG_VENDOR_EDIT
+#endif //CONFIG_MACH_OPPO
 
 static struct memtype_reserve msm8974_reserve_table[] __initdata = {
 	[MEMTYPE_SMI] = {
@@ -419,51 +419,51 @@ static void __init msm8974_map_io(void)
 
 void __init msm8974_init(void)
 {
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	/* OPPO 2013.07.09 hewei add begin for FTM */
 	int rc = 0;
 	/* OPPO 2013.07.09 hewei add end for FTM */
-#endif //CONFIG_VENDOR_EDIT
+#endif //CONFIG_MACH_OPPO
 	struct of_dev_auxdata *adata = msm8974_auxdata_lookup;
 
 	if (socinfo_init() < 0)
 		pr_err("%s: socinfo_init() failed\n", __func__);
-#ifdef CONFIG_VENDOR_EDIT		
+#ifdef CONFIG_MACH_OPPO		
 	/* OPPO 2013.07.09 hewei add begin for factory mode*/
 	board_mfg_mode_init();
 	/* OPPO 2013.07.09 hewei add end */
-#endif //CONFIG_VENDOR_EDIT
+#endif //CONFIG_MACH_OPPO
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* OPPO 2013-09-03 zhanglong add for add interface start reason and boot_mode begin */
     start_reason_init();
     boot_mode_init();
 /* OPPO 2013-09-03 zhanglong add for add interface start reason and boot_mode end */
-#endif //CONFIG_VENDOR_EDIT
+#endif //CONFIG_MACH_OPPO
 	
 	msm_8974_init_gpiomux();
 	regulator_has_full_constraints();
 	board_dt_populate(adata);
 	msm8974_add_drivers();
 /*OPPO yuyi 2013-07-15 add begin for version */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	board_pcb_verison_init();
 	board_rf_version_init();
 
 #endif
 /*OPPO yuyi 2013-07-15 add end for version*/
 	
-#ifdef CONFIG_VENDOR_EDIT	
+#ifdef CONFIG_MACH_OPPO	
 	/* OPPO 2013.07.09 hewei add begin for factory mode*/
 	systeminfo_kobj = kobject_create_and_add("systeminfo", NULL);
 	printk("songxh create systeminto node suscess!\n");
 	if (systeminfo_kobj)
 		rc = sysfs_create_group(systeminfo_kobj, &attr_group);
 	/* OPPO 2013.07.09 hewei add end */
-#endif //CONFIG_VENDOR_EDIT	
+#endif //CONFIG_MACH_OPPO	
 }
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2013/12/03, Add for ram_console device
 static struct persistent_ram_descriptor msm_prd[] __initdata = {
 	{
@@ -478,15 +478,15 @@ static struct persistent_ram msm_pr __initdata = {
 	.start = /*0xE0200000,//*/PLAT_PHYS_OFFSET + SZ_1G + SZ_512M,
 	.size = SZ_1M,
 };
-#endif  /* VENDOR_EDIT */
+#endif  /* CONFIG_MACH_OPPO */
 
 void __init msm8974_init_very_early(void)
 {
 	msm8974_early_memory();
-#ifdef VENDOR_EDIT	
+#ifdef CONFIG_MACH_OPPO	
 //Zhilong.Zhang@OnlineRd.Driver, 2013/12/03, Add for ram_console device
 	persistent_ram_early_init(&msm_pr);
-#endif  /* VENDOR_EDIT */
+#endif  /* CONFIG_MACH_OPPO */
 }
 
 static const char *msm8974_dt_match[] __initconst = {

@@ -23,7 +23,7 @@
 #include <linux/err.h>
 
 #include "mdss_dsi.h"
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* OPPO 2013-10-24 yxq Add begin for panel info */
 #include <mach/device_info.h>
 /* OPPO 2013-10-24 yxq Add end */
@@ -34,20 +34,20 @@
 #include <linux/pcb_version.h>
 /* OPPO 2014-02-11 yxq add end */
 #endif
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/24  Add for ESD test */
 #include <linux/switch.h>
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 #define DT_CMD_HDR 6
 
 DEFINE_LED_TRIGGER(bl_led_trigger);
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 extern  int lm3630_bank_a_update_status(u32 bl_level);
 #endif
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/24  Add for ESD test*/
 #define LCD_TE_GPIO  28
 DEFINE_SPINLOCK(te_count_lock);
@@ -124,10 +124,10 @@ static struct device_attribute mdss_lcd_attrs[] = {
 	__ATTR(dispswitch, 0777, attr_mdss_dispswitch, NULL),				
 	__ATTR_NULL,		
 	};
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/17  Add for set cabc */
 struct dsi_panel_cmds cabc_off_sequence;
 struct dsi_panel_cmds cabc_user_interface_image_sequence;
@@ -240,7 +240,7 @@ static int set_cabc_resume_mode(int mode)
     }
     return ret;
 }
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 
 void mdss_dsi_panel_pwm_cfg(struct mdss_dsi_ctrl_pdata *ctrl)
@@ -314,7 +314,7 @@ static void mdss_dsi_panel_bklt_pwm(struct mdss_dsi_ctrl_pdata *ctrl, int level)
 		pr_err("%s: pwm_enable() failed err=%d\n", __func__, ret);
 	ctrl->pwm_enabled = 1;
 }
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 static char dcs_cmd[2] = {0x54, 0x00}; /* DTYPE_DCS_READ */
 static struct dsi_cmd_desc dcs_read_cmd = {
 	{DTYPE_DCS_READ, 1, 0, 1, 5, sizeof(dcs_cmd)},
@@ -388,7 +388,7 @@ static void mdss_dsi_panel_bklt_dcs(struct mdss_dsi_ctrl_pdata *ctrl, int level)
 	mdss_dsi_cmdlist_put(ctrl, &cmdreq);
 }
 
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 /* Xinqin.Yang@PhoneSW.Driver, 2014/01/10  Modify for rewrite reset function */
 void mdss_dsi_panel_reset(struct mdss_panel_data *pdata, int enable)
 {
@@ -611,7 +611,7 @@ static int mdss_dsi_panel_partial_update(struct mdss_panel_data *pdata)
 static void mdss_dsi_panel_bl_ctrl(struct mdss_panel_data *pdata,
 							u32 bl_level)
 {
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
 
 	if (pdata == NULL) {
@@ -719,7 +719,7 @@ if(ctrl->index==0)
 //	mdss_dsi_dcs_read(ctrl,0x56, 0x00);
 //}
 //yanghai test end
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/17  Add for set cabc */
 	if(ctrl->index==0){
 		set_backlight_pwm(1);
@@ -730,9 +730,9 @@ if(ctrl->index==0)
 		flag_lcd_off = false;
 		mutex_unlock(&cabc_mutex);
 	}
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/25  Add for ESD test */
 	if(get_pcb_version() >= HW_VERSION__20 && ctrl->index==0){
 		if(first_run_reset==1 && !cont_splash_flag){
@@ -747,7 +747,7 @@ if(ctrl->index==0)
 			schedule_delayed_work(&techeck_work, msecs_to_jiffies(5000));
 		}
 	}
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	pr_info("%s:-\n", __func__);
 
 	return 0;
@@ -775,7 +775,7 @@ static int mdss_dsi_panel_off(struct mdss_panel_data *pdata)
 	if (ctrl->off_cmds.cmd_cnt)
 		mdss_dsi_panel_cmds_send(ctrl, &ctrl->off_cmds);
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/25  Add for ESD test */
 	if(get_pcb_version() >= HW_VERSION__20 && ctrl->ndx==0){
 		cancel_delayed_work_sync(&techeck_work);	 
@@ -783,7 +783,7 @@ static int mdss_dsi_panel_off(struct mdss_panel_data *pdata)
 		 	irq_state--;  
 		 	disable_irq(irq);
 	}
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	pr_debug("%s:-\n", __func__);
 	return 0;
 }
@@ -1335,7 +1335,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 	mdss_dsi_parse_dcs_cmds(np, &ctrl_pdata->off_cmds,
 		"qcom,mdss-dsi-off-command", "qcom,mdss-dsi-off-command-state");
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/17  Add for set cabc */
 	mdss_dsi_parse_dcs_cmds(np, &cabc_off_sequence,
 		"qcom,mdss-dsi-cabc-off-command", "qcom,mdss-dsi-off-command-state");
@@ -1345,7 +1345,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 		"qcom,mdss-dsi-cabc-still-image-command", "qcom,mdss-dsi-off-command-state");
 	mdss_dsi_parse_dcs_cmds(np, &cabc_video_image_sequence,
 		"qcom,mdss-dsi-cabc-video-command", "qcom,mdss-dsi-off-command-state");
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 	return 0;
 
@@ -1361,18 +1361,18 @@ int mdss_dsi_panel_init(struct device_node *node,
 	static const char *panel_name;
 	bool cont_splash_enabled;
 	bool partial_update_enabled;
-#ifdef VENDOR_EDIT	
+#ifdef CONFIG_MACH_OPPO	
 /* OPPO 2013-10-24 yxq Add begin for panel info */
     static const char *panel_manufacture;
     static const char *panel_version;
 /* OPPO 2013-10-24 yxq Add end */
 #endif
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/17  Add for set cabc */
 	if(first_run_init == 1)
 		panel_data = ctrl_pdata;
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 	if (!node) {
 		pr_err("%s: no panel node\n", __func__);
@@ -1387,7 +1387,7 @@ int mdss_dsi_panel_init(struct device_node *node,
 	else
 		pr_info("%s: Panel Name = %s\n", __func__, panel_name);
 		
-#ifdef VENDOR_EDIT	
+#ifdef CONFIG_MACH_OPPO	
 /* OPPO 2013-10-24 yxq Add begin for panel info */
     panel_manufacture = of_get_property(node, "qcom,mdss-dsi-panel-manufacture", NULL);
     if (!panel_manufacture)
@@ -1402,7 +1402,7 @@ int mdss_dsi_panel_init(struct device_node *node,
     register_device_proc("lcd", (char *)panel_version, (char *)panel_manufacture);
 /* OPPO 2013-10-24 yxq Add end */
 #endif
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/22  Add for ESD test*/
 	if (get_pcb_version() >= HW_VERSION__20 && first_run_init==1){  //for find7s
 		first_run_init=0;
@@ -1431,7 +1431,7 @@ int mdss_dsi_panel_init(struct device_node *node,
 		mdss_lcd->dev_attrs = mdss_lcd_attrs;				
 		device_create(mdss_lcd,dev_lcd,0,NULL,"lcd_control");
 		}
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 
 	rc = mdss_panel_parse_dt(node, ctrl_pdata);
 	if (rc) {
@@ -1445,7 +1445,7 @@ int mdss_dsi_panel_init(struct device_node *node,
 	else
 		cont_splash_enabled = false;
 /* OPPO 2013-12-09 yxq Add begin for disable continous display for ftm, rf, wlan mode */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
     if ((MSM_BOOT_MODE__FACTORY == get_boot_mode()) ||
         (MSM_BOOT_MODE__RF == get_boot_mode()) ||
         (MSM_BOOT_MODE__WLAN == get_boot_mode())) {
@@ -1453,10 +1453,10 @@ int mdss_dsi_panel_init(struct device_node *node,
     }
 #endif
 /* OPPO 2013-12-09 yxq Add end */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* Xiaori.Yuan@Mobile Phone Software Dept.Driver, 2014/02/25  Add for ESD test */
 	cont_splash_flag = cont_splash_enabled;
-#endif /*VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 	if (!cont_splash_enabled) {
 		pr_info("%s:%d Continuous splash flag not found.\n",
 				__func__, __LINE__);

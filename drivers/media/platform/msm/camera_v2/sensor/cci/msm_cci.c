@@ -698,7 +698,7 @@ static int32_t msm_cci_init(struct v4l2_subdev *sd,
 	}
 
 /*Added by Jinshui.Liu@Camera 20140221 start for cci error*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	wake_lock(&cci_dev->cci_wakelock);
 #endif
 /*Added by Jinshui.Liu@Camera 20140221 end*/
@@ -781,7 +781,7 @@ static int32_t msm_cci_release(struct v4l2_subdev *sd)
 		cci_dev->cci_gpio_tbl_size, 0);
 
 /*Added by Jinshui.Liu@Camera 20140221 start for cci error*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
     wake_unlock(&cci_dev->cci_wakelock);
 #endif
 /*Added by Jinshui.Liu@Camera 20140221 end*/
@@ -1189,7 +1189,7 @@ static int __devinit msm_cci_probe(struct platform_device *pdev)
 	CDBG("%s cci subdev %p\n", __func__, &new_cci_dev->msm_sd.sd);
 	CDBG("%s line %d\n", __func__, __LINE__);
 /*Added by Jinshui.Liu@Camera 20140221 start for cci error*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	wake_lock_init(&new_cci_dev->cci_wakelock,WAKE_LOCK_SUSPEND,"msm_cci_wakelock");
 #endif
 /*Added by Jinshui.Liu@Camera 20140221 end*/

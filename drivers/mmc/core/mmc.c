@@ -1247,13 +1247,13 @@ static int mmc_change_bus_speed(struct mmc_host *host, unsigned long *freq)
 		mmc_set_clock(host, (unsigned int) (*freq));
 	}
 
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2014/02/07, Modify for solve 32GB emmc can not boot normal 
 	if ((mmc_card_hs400(card) || mmc_card_hs200(card))
 		&& card->host->ops->execute_tuning) {
-#else /* VENDOR_EDIT */
+#else /* CONFIG_MACH_OPPO */
 	if (mmc_card_hs200(card) && card->host->ops->execute_tuning) {		
-#endif /* VENDOR_EDIT */
+#endif /* CONFIG_MACH_OPPO */
 
 		/*
 		 * We try to probe host driver for tuning for any

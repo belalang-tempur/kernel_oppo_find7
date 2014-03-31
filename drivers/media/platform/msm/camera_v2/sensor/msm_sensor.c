@@ -28,7 +28,7 @@
 #endif
 
 /* OPPO 2013-12-18 yingpiao.lin modify begin for bug gpio-standby is none */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 #define UNDEFINE_GPIO 0XFFFF
 #endif
 /* OPPO 2013-12-18 yingpiao.lin Add modify end */
@@ -312,7 +312,7 @@ static int32_t msm_sensor_get_dt_vreg_data(struct device_node *of_node,
 		CDBG("%s cam_vreg[%d].type = %d\n", __func__, i,
 			sensordata->cam_vreg[i].type);
 	}
-	#ifdef CONFIG_VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
 	// lingjianing 2014-3-5 modify for 14001 camera AVDD and DVDD
        #ifdef CONFIG_OPPO_DEVICE_FIND7OP
 	 rc = of_property_read_u32_array(of_node, "qcom,cam-vreg-min-find7op-voltage",
@@ -331,7 +331,7 @@ static int32_t msm_sensor_get_dt_vreg_data(struct device_node *of_node,
 		CDBG("%s cam_vreg[%d].min_voltage = %d\n", __func__,
 			i, sensordata->cam_vreg[i].min_voltage);
 	}
-	#ifdef CONFIG_VENDOR_EDIT
+	#ifdef CONFIG_MACH_OPPO
 	// lingjianing 2014-3-5 modify for 14001 camera AVDD and DVDD
         #ifdef CONFIG_OPPO_DEVICE_FIND7OP
 	rc = of_property_read_u32_array(of_node, "qcom,cam-vreg-max-find7op-voltage",
@@ -589,7 +589,7 @@ int32_t msm_sensor_init_gpio_pin_tbl(struct device_node *of_node,
 		CDBG("%s qcom,gpio-reset %d\n", __func__,
 			gconf->gpio_num_info->gpio_num[SENSOR_GPIO_STANDBY]);
 /* OPPO 2013-12-18 yingpiao.lin modify begin for bug gpio-standby is none */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
     } else {
 			gconf->gpio_num_info->gpio_num[SENSOR_GPIO_STANDBY] =
 				UNDEFINE_GPIO;
@@ -1050,7 +1050,7 @@ int32_t msm_sensor_power_up(struct msm_sensor_ctrl_t *s_ctrl)
 				goto power_up_failed;
 			}
 /* OPPO 2013-12-18 yingpiao.lin modify begin for bug gpio-standby is none */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 			if (data->gpio_conf->gpio_num_info->gpio_num
 				[power_setting->seq_val] == UNDEFINE_GPIO)
 				continue;
@@ -1134,7 +1134,7 @@ power_up_failed:
 			break;
 		case SENSOR_GPIO:
 /* OPPO 2013-12-18 yingpiao.lin modify begin for bug gpio-standby is none */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 			if (data->gpio_conf->gpio_num_info->gpio_num
 				[power_setting->seq_val] == UNDEFINE_GPIO)
 				continue;
@@ -1209,7 +1209,7 @@ int32_t msm_sensor_power_down(struct msm_sensor_ctrl_t *s_ctrl)
 				continue;
 			}
 /* OPPO 2013-12-18 yingpiao.lin modify begin for bug gpio-standby is none */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 			if (data->gpio_conf->gpio_num_info->gpio_num
 				[power_setting->seq_val] == UNDEFINE_GPIO)
 				continue;
@@ -1297,7 +1297,7 @@ static void msm_sensor_stop_stream(struct msm_sensor_ctrl_t *s_ctrl)
 }
 
 /* OPPO 2013-12-26 zhuosj Add begin for at test */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static void at_msm_sensor_power_down(struct msm_sensor_ctrl_t *s_ctrl)
 {
 	pr_err("%s cmd is 0 \n", __func__);
@@ -1337,7 +1337,7 @@ static long msm_sensor_subdev_ioctl(struct v4l2_subdev *sd,
 		return -EBADF;
 	}
 /* OPPO 2013-12-26 zhuosj Add begin for at test */
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	if (cmd == 0 && arg == NULL) {
 		at_msm_sensor_power_down(s_ctrl);
 		return 0;

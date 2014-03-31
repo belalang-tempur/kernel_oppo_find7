@@ -81,17 +81,17 @@ static struct platform_driver ram_console_driver = {
 	.probe = ram_console_probe,
 };
 
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2013/12/03, Add for ram_console device
 static struct platform_device *ram_console_dev;
 #endif
 
 static int __init ram_console_module_init(void)
 {
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2013/12/03, Add for ram_console device
 	return platform_driver_register(&ram_console_driver);
-#else  /* VENDOR_EDIT */
+#else  /* CONFIG_MACH_OPPO */
 	int ret;
 
 	ram_console_dev = platform_device_alloc("ram_console", -1);
@@ -109,7 +109,7 @@ static int __init ram_console_module_init(void)
 		platform_device_unregister(ram_console_dev);
 
 	return ret;
-#endif  /* VENDOR_EDIT */
+#endif  /* CONFIG_MACH_OPPO */
 }
 
 #ifndef CONFIG_PRINTK
@@ -127,11 +127,11 @@ static ssize_t ram_console_read_old(struct file *file, char __user *buf,
 	char *str;
 	int ret;
 
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 //Zhilong.Zhang@OnlineRd.Driver, 2014/01/16, Delete for solve the problem that can not read /proc/last_kmsg right.
 	if (dmesg_restrict && !capable(CAP_SYSLOG))
 		return -EPERM;
-#endif  /* VENDOR_EDIT */
+#endif  /* CONFIG_MACH_OPPO */
 
 	/* Main last_kmsg log */
 	if (pos < old_log_size) {

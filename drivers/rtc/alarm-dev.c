@@ -41,7 +41,7 @@ module_param_named(debug_mask, debug_mask, int, S_IRUGO | S_IWUSR | S_IWGRP);
 	} while (0)
 
 /* OPPO 2013-11-19 yuyi modify begin for power up alarm */
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 #define ANDROID_ALARM_WAKEUP_MASK ( \
 	ANDROID_ALARM_RTC_WAKEUP_MASK | \
 	ANDROID_ALARM_ELAPSED_REALTIME_WAKEUP_MASK)
@@ -108,7 +108,7 @@ static long alarm_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		}
 		alarm_enabled &= ~alarm_type_mask;
 /* OPPO 2013-11-19 yuyi modify begin for power up alarm */
-#ifndef VENDOR_EDIT 
+#ifndef CONFIG_MACH_OPPO 
 		if (alarm_type == ANDROID_ALARM_RTC_POWEROFF_WAKEUP)
 			set_power_on_alarm(0);
 #else
@@ -145,7 +145,7 @@ from_old_alarm_set:
 			timespec_to_ktime(new_alarm_time),
 			timespec_to_ktime(new_alarm_time));
 /* OPPO 2013-11-19 yuyi modify begin for power up alarm */
-#ifndef VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 		if ((alarm_type == ANDROID_ALARM_RTC_POWEROFF_WAKEUP) &&
 				(ANDROID_ALARM_BASE_CMD(cmd) ==
 				 ANDROID_ALARM_SET(0)))
@@ -197,7 +197,7 @@ from_old_alarm_set:
 	case ANDROID_ALARM_GET_TIME(0):
 		switch (alarm_type) {
 /* OPPO 2013-11-19 yuyi Add begin for power up alarm */
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 		case ANDROID_ALARM_RTC_POWERUP: /* mwalker to get rtc alarm powerup */
 #endif
 /* OPPO 2013-11-19 yuyi Add begin for power up alarm */

@@ -493,7 +493,7 @@ struct qpnp_led_data {
 
 static int num_kpbl_leds_on;
 /*Added by Jinshui.Liu@Camera 20140207 start for*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 bool flash_blink_state;
 int led_flash_state;
 #endif
@@ -1269,7 +1269,7 @@ static int qpnp_kpdbl_set(struct qpnp_led_data *led)
 			return rc;
 		}
 	/*OPPO yuyi modify begin for button_current */
-	#ifndef CONFIG_VENDOR_EDIT
+	#ifndef CONFIG_MACH_OPPO
 		num_kpbl_leds_on++;
 	#else
 		num_kpbl_leds_on = 1;
@@ -2265,7 +2265,7 @@ static ssize_t blink_store(struct device *dev,
 }
 
 /*Added by Jinshui.Liu@Camera 20140207 start for*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static void led_flash_blink_work(struct work_struct *work)
 {
     //int brightness;
@@ -2362,7 +2362,7 @@ static DEVICE_ATTR(blink, 0664, NULL, blink_store);
 
 static struct attribute *led_attrs[] = {
 /*Added by Jinshui.Liu@Camera 20140207 start for*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
     &dev_attr_flash_blink.attr,
 #endif
 /*Added by Jinshui.Liu@Camera 20140207 end*/

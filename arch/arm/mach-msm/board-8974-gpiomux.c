@@ -542,7 +542,7 @@ static struct msm_gpiomux_config msm_lcd_configs[] __initdata = {
 		},
 	},
 /* OPPO 2013-10-18 yxq added begin for backlight */
-#ifdef CONFIG_VENDOR_EDIT	
+#ifdef CONFIG_MACH_OPPO	
 		{
 		/* bl hw enable pin*/
 		.gpio      = 91,
@@ -556,7 +556,7 @@ static struct msm_gpiomux_config msm_lcd_configs[] __initdata = {
 };
 
 /*OPPO 2013-11-04 liaofuchun add for pull down GPIO96*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static struct gpiomux_setting sdc4_suspend_cfg;
 #endif
 /*OPPO 2013-11-04 liaofuchun add end*/
@@ -574,7 +574,7 @@ static struct msm_gpiomux_config msm_epm_configs[] __initdata = {
 		},
 	},
 /*OPPO 2013-11-04 liaofuchun modify for pull down GPIO96*/
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	{
 		.gpio      = 96,		/* EPM MARKER1 */
 		.settings = {
@@ -593,7 +593,7 @@ static struct msm_gpiomux_config msm_epm_configs[] __initdata = {
 /*OPPO 2013-11-04 liaofuchun modify end*/
 };
 //OPPO yuyi 2014-03-18 add begin for NFC spi clk
-#ifdef VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static struct gpiomux_setting gpio_blsp6_spi3_config = {
 	.func = GPIOMUX_FUNC_2, 
 	.drv = GPIOMUX_DRV_8MA, 
@@ -633,7 +633,7 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 		},
 	},
 //OPPO yuyi 2014-03-18 add begin for NFC spi clk
-//#ifdef VENDOR_EDIT
+//#ifdef CONFIG_MACH_OPPO
 	{
 		.gpio = 49, //BLSP1_QUP5 (BLSP6) MOSI
 		.settings = {
@@ -665,15 +665,15 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 //#endif
 //OPPO yuyi 2014-03-18 add end for NFC spi clk
 //wangjc add.
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	{
 		/* BLSP1 QUP I2C_DATA */
 		.gpio      = 2,
 		.settings = {
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/01/08  Add for add i2c active setting */
 			[GPIOMUX_ACTIVE] = &gpio_i2c_act_config,
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
@@ -682,10 +682,10 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 		/* BLSP1 QUP I2C_CLK */
 		.gpio      = 3,
 		.settings = {
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/01/08  Add for add i2c active setting */
 			[GPIOMUX_ACTIVE] = &gpio_i2c_act_config,
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
@@ -719,24 +719,24 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 		},
 	},
 /*OPPO yuyi 2013-03-22 add begin for nfc*/
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 	{
 		.gpio	   = 29, 	/* BLSP1 QUP5 I2C_DAT */
 		.settings = {
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/01/08  Add for add i2c active setting */
 			[GPIOMUX_ACTIVE] = &gpio_i2c_act_config,
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
 	{
 		.gpio	   = 30, 	/* BLSP1 QUP5 I2C_CLK */
 		.settings = {
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /* jingchun.wang@Onlinerd.Driver, 2014/01/08  Add for add i2c active setting */
 			[GPIOMUX_ACTIVE] = &gpio_i2c_act_config,
-#endif /*CONFIG_VENDOR_EDIT*/
+#endif /*CONFIG_MACH_OPPO*/
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
@@ -844,7 +844,7 @@ static struct gpiomux_setting cam_settings[] = {
 };
 
 //liuyan 2013-3-14,add hpmic switch
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 static struct gpiomux_setting hpmic_switch_active_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_8MA,
@@ -882,7 +882,7 @@ static struct gpiomux_setting es_suspended_config = {
 };*/
 #endif
 //liuyan add end
-#ifndef CONFIG_VENDOR_EDIT  //add by yubin, oppo
+#ifndef CONFIG_MACH_OPPO  //add by yubin, oppo
 static struct gpiomux_setting sd_card_det_active_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
@@ -906,7 +906,7 @@ static struct msm_gpiomux_config sd_card_det __initdata = {
 };
 #endif
 
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 /*liuyan add 2013-8-14 for hpmic, speaker pa,etc*/
 static struct msm_gpiomux_config external_pa_configs[] __initdata = {
 
@@ -1013,7 +1013,7 @@ static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 		},
 	},
 /*liuyan 2013-10-8,del for es325 uart*/
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	{
 		.gpio = 23, /* FLASH_LED_EN */
 		.settings = {
@@ -1030,7 +1030,7 @@ static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 	},
 #endif
 /* OPPO 2013-11-13 zhengzk Delete begin for sensor has used */
-#if 0 //#ifndef CONFIG_VENDOR_EDIT
+#if 0 //#ifndef CONFIG_MACH_OPPO
 	{
 		.gpio = 25, /* WEBCAM2_RESET_N */
 		.settings = {
@@ -1076,7 +1076,7 @@ static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 		},
 	},
 /* OPPO 2013-10-18 yxq deleted begin for reason */
-#ifndef CONFIG_VENDOR_EDIT	
+#ifndef CONFIG_MACH_OPPO	
 	{
 		.gpio = 91, /* CAM2_STANDBY_N */
 		.settings = {
@@ -1167,7 +1167,7 @@ static struct msm_gpiomux_config msm_sensor_configs_dragonboard[] __initdata = {
 		},
 	},
 /* OPPO 2013-11-13 zhengzk Delete begin for sensor has used */
-#if 0 //#ifndef CONFIG_VENDOR_EDIT
+#if 0 //#ifndef CONFIG_MACH_OPPO
 	{
 		.gpio = 25, /* WEBCAM2_RESET_N */
 		.settings = {
@@ -1213,7 +1213,7 @@ static struct msm_gpiomux_config msm_sensor_configs_dragonboard[] __initdata = {
 		},
 	},
 /* OPPO 2013-10-18 yxq deleted begin for reason */
-#ifndef CONFIG_VENDOR_EDIT	
+#ifndef CONFIG_MACH_OPPO	
 	{
 		.gpio = 91, /* CAM2_STANDBY_N */
 		.settings = {
@@ -1246,7 +1246,7 @@ static struct gpiomux_setting auxpcm_sus_cfg = {
 };
 
 /* OPPO 2013-04-18 zhengzk Add begin for hallsensor */
-#if 1 //#ifdef CONFIG_VENDOR_EDIT
+#if 1 //#ifdef CONFIG_MACH_OPPO
 static struct gpiomux_setting hall_switch_active_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_8MA,
@@ -1277,7 +1277,7 @@ static struct msm_gpiomux_config msm8974_pri_pri_auxpcm_configs[] __initdata = {
 			[GPIOMUX_ACTIVE] = &auxpcm_act_cfg,
 		},
 	},
-#ifndef CONFIG_VENDOR_EDIT //lliuyan del
+#ifndef CONFIG_MACH_OPPO //lliuyan del
 /*
 	{
 		.gpio = 67,
@@ -1292,7 +1292,7 @@ static struct msm_gpiomux_config msm8974_pri_pri_auxpcm_configs[] __initdata = {
 		.gpio = 68,
 		.settings = {
 /* OPPO 2013-04-18 zhengzk Modify begin for hallsensor */
-#if 0 //#ifdef CONFIG_VENDOR_EDIT
+#if 0 //#ifdef CONFIG_MACH_OPPO
 			[GPIOMUX_SUSPENDED] = &auxpcm_sus_cfg,
 			[GPIOMUX_ACTIVE] = &auxpcm_act_cfg,
 #else
@@ -1328,7 +1328,7 @@ static struct msm_gpiomux_config msm8974_pri_ter_auxpcm_configs[] __initdata = {
 		},
 	},
 //liuyan 2013-12-30 del for spk gpio
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	{
 		.gpio = 77,
 		.settings = {
@@ -1573,7 +1573,7 @@ static struct msm_gpiomux_config msm8974_sdc4_configs[] __initdata = {
 		},
 	},
 	/*OPPO 2013-11-04 liaofuchun modify for GPIO96 pull down*/
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	{
 		/* DAT0 */
 		.gpio      = 96,
@@ -1594,7 +1594,7 @@ static struct msm_gpiomux_config msm8974_sdc4_configs[] __initdata = {
 #endif
 /*OPPO 2013-11-04 liaofuchun modify end*/
 //yanghai modify	for backlight hw enable pin 2013.10.8
-#ifndef CONFIG_VENDOR_EDIT
+#ifndef CONFIG_MACH_OPPO
 	{
 		/* CMD */
 		.gpio      = 91,
@@ -1683,11 +1683,11 @@ void __init msm_8974_init_gpiomux(void)
 	else
 		msm_gpiomux_install(msm_sensor_configs, \
 				ARRAY_SIZE(msm_sensor_configs));
-#ifdef CONFIG_VENDOR_EDIT
+#ifdef CONFIG_MACH_OPPO
 //liuyan add 2013-6-9 register gpio
     msm_gpiomux_install(external_pa_configs, ARRAY_SIZE(external_pa_configs));
 #endif
-#ifndef CONFIG_VENDOR_EDIT //add by yubin, oppo
+#ifndef CONFIG_MACH_OPPO //add by yubin, oppo
 	msm_gpiomux_install(&sd_card_det, 1);
 #endif	
 
