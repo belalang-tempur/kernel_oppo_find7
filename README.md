@@ -1,4 +1,4 @@
-Find7-Kernel-Source-4.3
+OPPO Find7 kernel source
 =======================
 
-Find7-Kernel-Source-4.3
+CodeFireX(periment), 2014
