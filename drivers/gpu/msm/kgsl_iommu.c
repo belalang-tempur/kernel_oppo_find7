@@ -72,6 +72,7 @@ static struct kgsl_iommu_register_list kgsl_iommuv1_reg[KGSL_IOMMU_REG_MAX] = {
 
 static struct iommu_access_ops *iommu_access_ops;
 
+#ifndef CONFIG_MACH_OPPO
 static void _iommu_lock(void)
 {
 	if (iommu_access_ops && iommu_access_ops->iommu_lock_acquire)
@@ -83,6 +84,21 @@ static void _iommu_unlock(void)
 	if (iommu_access_ops && iommu_access_ops->iommu_lock_release)
 		iommu_access_ops->iommu_lock_release();
 }
+#else
+static void _iommu_lock(struct kgsl_iommu const *iommu)
+{
+	if (iommu_access_ops && iommu_access_ops->iommu_lock_acquire)
+		iommu_access_ops->iommu_lock_acquire(
+						iommu->sync_lock_initialized);
+}
+
+static void _iommu_unlock(struct kgsl_iommu const *iommu)
+{
+	if (iommu_access_ops && iommu_access_ops->iommu_lock_release)
+		iommu_access_ops->iommu_lock_release(
+						iommu->sync_lock_initialized);
+}
+#endif
 
 struct remote_iommu_petersons_spinlock kgsl_iommu_sync_lock_vars;
 
@@ -1667,7 +1683,11 @@ static int kgsl_iommu_start(struct kgsl_mmu *mmu)
 	 * changing pagetables we can use this lsb value of the pagetable w/o
 	 * having to read it again
 	 */
+#ifndef CONFIG_MACH_OPPO
 	_iommu_lock();
+#else
+	_iommu_lock(iommu);
+#endif
 	for (i = 0; i < iommu->unit_count; i++) {
 		struct kgsl_iommu_unit *iommu_unit = &iommu->iommu_units[i];
 		for (j = 0; j < iommu_unit->dev_count; j++) {
@@ -1706,7 +1726,11 @@ static int kgsl_iommu_start(struct kgsl_mmu *mmu)
 		}
 	}
 	kgsl_iommu_lock_rb_in_tlb(mmu);
+#ifndef CONFIG_MACH_OPPO
 	_iommu_unlock();
+#else
+	_iommu_unlock(iommu);
+#endif
 
 	/* For complete CFF */
 	kgsl_cffdump_setmem(mmu->device, mmu->setstate_memory.gpuaddr +
@@ -1812,7 +1836,11 @@ void kgsl_iommu_pagefault_resume(struct kgsl_mmu *mmu)
 			for (j = 0; j < iommu_unit->dev_count; j++) {
 				if (iommu_unit->dev[j].fault) {
 					kgsl_iommu_enable_clk(mmu, j);
+#ifndef CONFIG_MACH_OPPO
 					_iommu_lock();
+#else
+					_iommu_lock(iommu);
+#endif
 					KGSL_IOMMU_SET_CTX_REG(iommu,
 						iommu_unit,
 						iommu_unit->dev[j].ctx_id,
@@ -1821,7 +1849,11 @@ void kgsl_iommu_pagefault_resume(struct kgsl_mmu *mmu)
 						iommu_unit,
 						iommu_unit->dev[j].ctx_id,
 						FSR, 0);
+#ifndef CONFIG_MACH_OPPO
 					_iommu_unlock();
+#else
+					_iommu_unlock(iommu);
+#endif
 					iommu_unit->dev[j].fault = 0;
 				}
 			}
@@ -1946,7 +1978,11 @@ static int kgsl_iommu_default_setstate(struct kgsl_mmu *mmu,
 	}
 
 	/* Acquire GPU-CPU sync Lock here */
+#ifndef CONFIG_MACH_OPPO
 	_iommu_lock();
+#else
+	_iommu_lock(iommu);
+#endif
 
 	if (flags & KGSL_MMUFLAGS_PTUPDATE) {
 		if (!msm_soc_version_supports_iommu_v0()) {
@@ -2017,7 +2053,11 @@ static int kgsl_iommu_default_setstate(struct kgsl_mmu *mmu,
 unlock:
 
 	/* Release GPU-CPU sync Lock here */
+#ifndef CONFIG_MACH_OPPO
 	_iommu_unlock();
+#else
+	_iommu_unlock(iommu);
+#endif
 
 	/* Disable smmu clock */
 	kgsl_iommu_disable_clk_on_ts(mmu, 0, false);

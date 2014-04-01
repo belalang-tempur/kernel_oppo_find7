@@ -170,6 +170,7 @@ struct mdss_mdp_ctl {
 	u32 dst_format;
 	bool is_secure;
 
+	u32 clk_rate;
 	int force_screen_state;
 
 	struct mdss_mdp_perf_params cur_perf;

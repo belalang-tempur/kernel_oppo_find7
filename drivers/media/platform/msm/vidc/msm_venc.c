@@ -756,6 +756,7 @@ static struct msm_vidc_ctrl msm_venc_ctrls[] = {
 		.qmenu = NULL,
 		.cluster = 0,
 	},
+	{
 		.id = V4L2_CID_MPEG_VIDC_VIDEO_DEINTERLACE,
 		.name = "Deinterlace for encoder",
 		.type = V4L2_CTRL_TYPE_BOOLEAN,
