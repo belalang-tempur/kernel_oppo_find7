@@ -2932,7 +2932,7 @@ static int __devinit dwc3_msm_probe(struct platform_device *pdev)
 		/* Leave the irq line disabled. It is only used for USB host
 		   mode suspend. i.e device plug in to the OTG cable
 		*/
-		disable_irq(msm->hs_phy_irq);
+		disable_irq(mdwc->hs_phy_irq);
 	}
 
 	if (mdwc->ext_xceiv.otg_capability) {
